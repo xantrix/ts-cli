@@ -1,3 +1,9 @@
+#various
+data/
+
+#Build
+build
+
 # Logs
 logs
 *.log

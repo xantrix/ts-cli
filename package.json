@@ -1,0 +1,36 @@
+{
+  "name": "ts-cli",
+  "version": "1.0.0",
+  "description": "A simple ts cli",
+  "main": "./build/main.js",
+  "bin": {
+    "gcd": "./build/main.js"
+  },
+  "scripts": {
+    "start": "npm run build:live",
+    "build": "tsc -p .",
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/main.ts -- -d",
+    "build:clean": "rm -rf build",
+    "cli": "node ./build/main.js",
+    "cli2": "ts-node src/main.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xantrix/ts-cli.git"
+  },
+  "author": "xantrix",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xantrix/ts-cli/issues"
+  },
+  "homepage": "https://github.com/xantrix/ts-cli#readme",
+  "devDependencies": {
+    "@types/node": "^13.13.5",
+    "nodemon": "^2.0.3",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "commander": "^5.1.0"
+  }
+}
