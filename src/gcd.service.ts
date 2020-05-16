@@ -1,22 +1,18 @@
 import * as fs from 'fs';
 import { once } from 'events';
 import { createInterface }  from 'readline';
-import { FileNotFound, FileNotValid, ParamNotValid, Exception } from './exceptions';
-import { Item, isItem } from './gcd.interfaces';
+import { FileNotFound, FileNotValid, ParamNotValid } from './exceptions';
+import { Item, isItem, Strategy, isStrategy } from './gcd.interfaces';
 
-export class GcdService  {
+export class GcdService {
 
   private itemList: Item[] = [];
   private filename: string;
-  private radius: number;
-  private latitude: number;
-  private longitude: number;
+  private strategy: Strategy;
 
-  constructor(filename: string, radius: number, lat: number, long: number) {
+  constructor(filename: string, strategy: Strategy) {
     this.filename = filename;
-    this.radius = Number(radius);
-    this.latitude = Number(lat);
-    this.longitude = Number(long);
+    this.strategy = strategy;
 
     switch (true) {
       case !fs.existsSync(this.filename):
@@ -25,32 +21,30 @@ export class GcdService  {
         throw new FileNotValid(this.filename);
       case !this.filename.endsWith('.txt'):
         throw new FileNotValid(this.filename);
-      case Number.isNaN(this.latitude):
-        throw new ParamNotValid('latitude', 'nan');
-      case Number.isNaN(this.longitude):
-        throw new ParamNotValid('longitude', 'nan');
-      case Number.isNaN(this.radius):
-        throw new ParamNotValid('radius', 'nan');
-      case this.radius < 0:
-        throw new ParamNotValid(`radius`, 'negative');
+      case !isStrategy(this.strategy):
+        throw new ParamNotValid(`strategy`);
     }
   }
 
-  public async findItems(): Promise<Item[] | Exception> {
+  /**
+   * Find valid items
+   */
+  public async findItems() {
     try {
       const rl = createInterface({
         input: fs.createReadStream(this.filename),
         crlfDelay: Infinity
       });
+      console.log('File opened');
       rl.on('line', (line) => {
-
-        try {
-          const item = this.lineParse(line);
-          if (isItem(item)) {
+        const item = this.lineParse(line);
+        if (isItem(item)) {
+          if (this.strategy.checking(item)) {
+            // console.log(`Item found:`, item);
             this.itemList.push(item);
           }
-        } catch (e) {
-          throw new Exception('err', 'err');
+        } else {
+          console.warn(`Item not valid found:`, item);
         }
       });
 
@@ -58,12 +52,43 @@ export class GcdService  {
       console.log('File processed.');
 
       return this.itemList;
-    } catch (err) {
-      console.error(err);
-      throw new Exception('err', 'err');
+    } catch (e) {
+      console.error('Error in findItems:', e);
+      throw e;
     }
   }
 
+  /**
+   * Sort list of item
+   * @param list
+   */
+  public sortItems(list: Item[]): Item[] {
+    return list.sort((i1: Item, i2: Item) => {
+      if (i1.id < i2.id) {
+        return -1;
+      }
+      else if (i1.id === i2.id) {
+        return 0;
+      }
+
+      return 1;
+    });
+  }
+
+  /**
+   * Print valid items info
+   */
+  public displayItems(list: Item[]): void {
+    list.forEach((item) => {
+      console.log(`item id: ${item.id}`);
+    });
+    console.log(`Items found: ${list.length}`);
+  }
+
+  /**
+   * Convert string record to object
+   * @param line
+   */
   private lineParse(line: string) {
     const obj: any = { };
     const lineArray = line.split(',');

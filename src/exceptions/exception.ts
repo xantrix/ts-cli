@@ -1,10 +1,7 @@
 
-export class Exception {
-    code: string;
-    message: string;
-
-    constructor(code: string, message: string) {
-        this.code = code;
-        this.message = message;
-    }
+export class Exception extends Error {
+  constructor(name: string, message: string) {
+    super(message);
+    this.name = name;
+  }
 }

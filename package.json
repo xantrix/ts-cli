@@ -12,7 +12,8 @@
     "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/main.ts -- -d",
     "build:clean": "rm -rf build",
     "cli": "node ./build/main.js",
-    "cli2": "ts-node src/main.ts"
+    "cli2": "NODE_DEBUG=off ts-node src/main.ts",
+    "cli-debug": "NODE_DEBUG=app ts-node src/main.ts"
   },
   "repository": {
     "type": "git",
