@@ -7,7 +7,7 @@ export class Main {
 
   service!: GcdService;
 
-  async init(args: string[]) {
+  async init(args: string[], throwExceptions = false) {
     program
     .version('0.0.1')
     .description('CLI')
@@ -40,8 +40,13 @@ export class Main {
         const list = gcd.getValidItems();
         gcd.displayItems(list);
 
+        return list;
+
       } catch (e) {
         console.error('Error:', e.message);
+        if (throwExceptions) {
+          throw e;
+        }
       }
     }
 

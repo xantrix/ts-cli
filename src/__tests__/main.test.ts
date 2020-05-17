@@ -1,25 +1,44 @@
+import { ParamNotValid, FileNotFound } from './../exceptions';
 import { Main } from '../main';
 
 describe('test Gdc service', () => {
   const cliArgs = ['ts-node', 'src/index.ts'];
   const defaultArgs = ['-r', '100', '--lat', '52.493256', '--long', '13.446082'];
+
   // beforeEach(() => {
   // });
 
-  test('param radius invalid', async () => {
+  test('it fail when param file not exists', async () => {
     const main = new Main();
-    const args = [...cliArgs, ...['-r', 'text']];
-    try {
-      await main.init(args);
-    } catch (e) {
-      expect(e).toMatch(/radius should be a number/);
-    }
+    const args = [...cliArgs, ...['-f', 'notexists.txt']];
+    expect.assertions(1);
+    await expect(main.init(args, true)).rejects.toEqual(
+      new FileNotFound('notexists.txt')
+    );
   });
 
-  test('all items ok', async () => {
+  test('it fail when param radius is not a number', async () => {
+    const main = new Main();
+    const args = [...cliArgs, ...['-r', 'text']];
+    expect.assertions(1);
+    await expect(main.init(args, true)).rejects.toEqual(
+      new ParamNotValid('radius', 'nan')
+    );
+  });
+
+  test('it fail when param lat is not a number', async () => {
+    const main = new Main();
+    const args = [...cliArgs, ...['--lat', 'text']];
+    expect.assertions(1);
+    await expect(main.init(args, true)).rejects.toEqual(
+      new ParamNotValid('targetCoord')
+    );
+  });
+
+  test('all items are valid', async () => {
     const main = new Main();
     const args = [...cliArgs, ...['-f', 'src/__tests__/data/ok.txt'], ...defaultArgs];
-    await main.init(args);
+    await main.init(args, true);
     const validList = main.service.getValidItems();
 
     expect(validList).toEqual([
