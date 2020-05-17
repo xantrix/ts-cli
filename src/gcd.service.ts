@@ -55,7 +55,6 @@ export class GcdService {
 
       return this.itemList;
     } catch (e) {
-      console.error('Error in findItems:', e);
       throw e;
     }
   }
@@ -65,6 +64,13 @@ export class GcdService {
    */
   public getNotValidItems() {
     return this.itemNotValidList;
+  }
+
+  /**
+   * Get a list of valid items
+   */
+  public getValidItems() {
+    return this.sortItems(this.itemList);
   }
 
   /**

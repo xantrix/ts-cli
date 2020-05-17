@@ -2,18 +2,18 @@
   "name": "ts-cli",
   "version": "1.0.0",
   "description": "A simple ts cli",
-  "main": "./build/main.js",
+  "main": "./build/index.js",
   "bin": {
-    "gcd": "./build/main.js"
+    "gcd": "./build/index.js"
   },
   "scripts": {
     "start": "npm run build:live",
     "build": "tsc -p .",
-    "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/main.ts -- -d",
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts -- -d",
     "build:clean": "rm -rf build",
-    "cli": "node ./build/main.js",
-    "cli2": "NODE_DEBUG=off ts-node src/main.ts",
-    "cli-debug": "NODE_DEBUG=app ts-node src/main.ts",
+    "cli-js": "node ./build/index.js",
+    "cli-debug": "NODE_DEBUG=app ts-node src/index.ts",
+    "cli": "ts-node src/index.ts",
     "test": "jest"
   },
   "repository": {

@@ -14,3 +14,5 @@
 `npm t -- --coverage`
 ### silent
 `npm t -- --silent`
+## Run only tests with a name that matches the regex
+`npm t -- -t "some pattern"`
