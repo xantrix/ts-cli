@@ -7,6 +7,7 @@ import { Item, isItem, Strategy, isStrategy } from './gcd.interfaces';
 export class GcdService {
 
   private itemList: Item[] = [];
+  private itemNotValidList: Item[] = [];
   private filename: string;
   private strategy: Strategy;
 
@@ -44,6 +45,7 @@ export class GcdService {
             this.itemList.push(item);
           }
         } else {
+          this.itemNotValidList.push(item);
           console.warn(`Item not valid found:`, item);
         }
       });
@@ -59,7 +61,14 @@ export class GcdService {
   }
 
   /**
-   * Sort list of item
+   * Get a list of not valid items
+   */
+  public getNotValidItems() {
+    return this.itemNotValidList;
+  }
+
+  /**
+   * Alphabetically (asc) sort a list of items
    * @param list
    */
   public sortItems(list: Item[]): Item[] {

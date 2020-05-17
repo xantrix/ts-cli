@@ -13,7 +13,8 @@
     "build:clean": "rm -rf build",
     "cli": "node ./build/main.js",
     "cli2": "NODE_DEBUG=off ts-node src/main.ts",
-    "cli-debug": "NODE_DEBUG=app ts-node src/main.ts"
+    "cli-debug": "NODE_DEBUG=app ts-node src/main.ts",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -26,8 +27,11 @@
   },
   "homepage": "https://github.com/xantrix/ts-cli#readme",
   "devDependencies": {
+    "@types/jest": "^25.2.2",
     "@types/node": "^13.13.5",
+    "jest": "^26.0.1",
     "nodemon": "^2.0.3",
+    "ts-jest": "^26.0.0",
     "ts-node": "^8.10.1",
     "typescript": "^3.8.3"
   },
