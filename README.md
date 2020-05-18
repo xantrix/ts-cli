@@ -1,18 +1,16 @@
 # ts-cli
 
-## Live build
+## Live build (development mode)
 `npm start `
 
-## Run cli command
+## Run cli command (typescript)
 `npm run cli`
 
+## Run cli command (javascript)
+`npm run build && npm run cli-js`
+
 ## Testing
-`npm t`
-### watch mode
-`npm t -- --watch`
-### coverage
-`npm t -- --coverage`
-### silent
-`npm t -- --silent`
+`npm run test-suite`
+
 ## Run only tests with a name that matches the regex
 `npm t -- -t "some pattern"`

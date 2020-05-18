@@ -1,0 +1,4 @@
+id: zshort, lat: 55.08068312, long:12.86196247,
+id: 100, lat: 55.08068312, long:12.86196247,
+id: b8e7100c-5054-4ac2-bd61-5c3825c33ed9, lat: 55.08068312, long:longstring,
+id: b9e7100c-5054-4ac2-bd61-5c3825c33ed9, lat: latstring, long:10.5824478,

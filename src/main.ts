@@ -12,17 +12,20 @@ export class Main {
     .version('0.0.1')
     .description('CLI')
     .option('-d, --debug', 'output extra debugging')
-    .option('-f, --file <filename>', 'Items filename', 'data/items.txt')
+    .option('-f, --file <filename>', 'Items filename (REQUIRED)')
     .option('-r, --radius <km>', 'Radius expressed in km(s)', '100')
     .option('--lat <num>', 'Latitude float e.g. 37.429992', '52.493256')
     .option('--long <num>', 'Longitude float e.g. -122.140159', '13.446082');
 
-    // program.parse(process.argv);
     program.parse(args);
 
     if (program.debug) {
       util.debuglog('app')('DEBUG!');
       console.log(program.opts());
+    }
+
+    if (!program.file) {
+      console.error('Error: --file is required');
     }
 
     if (program.file && program.radius && program.lat && program.long) {
@@ -50,8 +53,10 @@ export class Main {
       }
     }
 
-    if (!process.argv.slice(2).length) {
+    if (!args.slice(2).length) {
       program.outputHelp();
     }
+
+    return false;
   }
 }

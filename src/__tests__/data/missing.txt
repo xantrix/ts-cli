@@ -1,0 +1,4 @@
+noid: z7ee6861, lat: 55.08068312, long:12.86196247, 
+id: b9e8100c-5054-4ac2-bd61-5c3825c33ed9, lat: 55.08068312, 
+id: b8e7100c-5054-4ac2-bd61-5c3825c33ed9, long:longstring,
+long:longstring,
