@@ -31,32 +31,28 @@ export class GcdService {
    * Find valid items
    */
   public async findItems() {
-    try {
-      const rl = createInterface({
-        input: fs.createReadStream(this.filename),
-        crlfDelay: Infinity
-      });
-      console.log('File opened');
-      rl.on('line', (line) => {
-        const item = this.lineParse(line);
-        if (isItem(item)) {
-          if (this.strategy.checking(item)) {
-            // console.log(`Item found:`, item);
-            this.itemList.push(item);
-          }
-        } else {
-          this.itemNotValidList.push(item);
-          console.warn(`Item not valid found:`, item);
+    const rl = createInterface({
+      input: fs.createReadStream(this.filename),
+      crlfDelay: Infinity
+    });
+    console.log('File opened');
+    rl.on('line', (line) => {
+      const item = this.lineParse(line);
+      if (isItem(item)) {
+        if (this.strategy.checking(item)) {
+          // console.log(`Item found:`, item);
+          this.itemList.push(item);
         }
-      });
+      } else {
+        this.itemNotValidList.push(item);
+        console.warn(`Item not valid found:`, item);
+      }
+    });
 
-      await once(rl, 'close');
-      console.log('File processed.');
+    await once(rl, 'close');
+    console.log('File processed.');
 
-      return this.itemList;
-    } catch (e) {
-      throw e;
-    }
+    return this.itemList;
   }
 
   /**
@@ -93,7 +89,8 @@ export class GcdService {
   /**
    * Print valid items info
    */
-  public displayItems(list: Item[]): void {
+  public displayItems(list: Item[], intro: string): void {
+    console.log(intro);
     list.forEach((item) => {
       console.log(`item id: ${item.id}`);
     });

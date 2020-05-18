@@ -6,9 +6,24 @@ import { GcdService } from '../gcd.service';
 describe('test cli gcd', () => {
   const cliArgs = ['ts-node', 'src/index.ts'];
   const defaultArgs = ['-d', '-r', '100', '--lat', '52.493256', '--long', '13.446082'];
+  const defaultFileOkArg = ['-f', 'src/__tests__/data/ok.txt'];
 
   // beforeEach(() => {
   // });
+
+  test('main with flag no exceptions', async () => {
+    const main = new Main();
+    const args = [...cliArgs];
+    expect.assertions(2);
+    await expect(main.init(args, false)).resolves.toBe(
+      undefined
+    );
+    const main2 = new Main();
+    const args2 = [...cliArgs, ...defaultFileOkArg, ...['-r', 'text', '--lat', 'text', '--long', 'text']];
+    await expect(main2.init(args2, false)).resolves.toBe(
+      undefined
+    );
+  });
 
   test('it fails passing not a valid strategy', async () => {
     // @ts-ignore
@@ -27,8 +42,8 @@ describe('test cli gcd', () => {
     const main = new Main();
     const args = [...cliArgs];
     expect.assertions(1);
-    await expect(main.init(args, true)).resolves.toEqual(
-      false
+    await expect(main.init(args, true)).rejects.toThrowError(
+      Error
     );
   });
 
@@ -36,8 +51,8 @@ describe('test cli gcd', () => {
     const main = new Main();
     const args = [...cliArgs, ...['-d']];
     expect.assertions(1);
-    await expect(main.init(args, true)).resolves.toEqual(
-      false
+    await expect(main.init(args, true)).rejects.toThrowError(
+      Error
     );
   });
 
@@ -70,7 +85,7 @@ describe('test cli gcd', () => {
 
   test('it fails when param radius is not a number', async () => {
     const main = new Main();
-    const args = [...cliArgs, ...['-r', 'text']];
+    const args = [...cliArgs, ...defaultFileOkArg, ...['-r', 'text']];
     expect.assertions(1);
     await expect(main.init(args, true)).rejects.toEqual(
       new ParamNotValid('radius', 'nan')
@@ -79,7 +94,7 @@ describe('test cli gcd', () => {
 
   test('it fails when param radius is a negative number', async () => {
     const main = new Main();
-    const args = [...cliArgs, ...['-r', '-100']];
+    const args = [...cliArgs, ...defaultFileOkArg, ...['-r', '-100']];
     expect.assertions(1);
     await expect(main.init(args, true)).rejects.toEqual(
       new ParamNotValid(`radius`, 'negative')
@@ -88,7 +103,7 @@ describe('test cli gcd', () => {
 
   test('it fails when param lat is not a number', async () => {
     const main = new Main();
-    const args = [...cliArgs, ...['--lat', 'text']];
+    const args = [...cliArgs, ...defaultFileOkArg, ...['--lat', 'text']];
     expect.assertions(1);
     await expect(main.init(args, true)).rejects.toEqual(
       new ParamNotValid('targetCoord')
@@ -97,7 +112,7 @@ describe('test cli gcd', () => {
 
   test('it fails when param long is not a number', async () => {
     const main = new Main();
-    const args = [...cliArgs, ...['--long', 'text']];
+    const args = [...cliArgs, ...defaultFileOkArg, ...['--long', 'text']];
     expect.assertions(1);
     await expect(main.init(args, true)).rejects.toEqual(
       new ParamNotValid('targetCoord')

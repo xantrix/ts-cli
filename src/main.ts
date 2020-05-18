@@ -1,13 +1,14 @@
 import { Gcd } from './gcd.entity';
 import { GcdService } from './gcd.service';
 import util from 'util';
-import { program } from 'commander';
+import { Command } from 'commander';
 
 export class Main {
 
   service!: GcdService;
 
   async init(args: string[], throwExceptions = false) {
+    const program = new Command();
     program
     .version('0.0.1')
     .description('CLI')
@@ -41,10 +42,9 @@ export class Main {
 
         await gcd.findItems();
         const list = gcd.getValidItems();
-        gcd.displayItems(list);
+        gcd.displayItems(list, `The following items are located within ${Number(program.radius)} radius:`);
 
-        return list;
-
+        return true;
       } catch (e) {
         console.error('Error:', e.message);
         if (throwExceptions) {
@@ -57,6 +57,9 @@ export class Main {
       program.outputHelp();
     }
 
-    return false;
+    if (throwExceptions) {
+      throw new Error();
+    }
+
   }
 }

@@ -5,6 +5,7 @@
 
 ## Run cli command (typescript)
 `npm run cli`
+`npm run cli -- -f data/items2.txt -r 50`
 
 ## Run cli command (javascript)
 `npm run build && npm run cli-js`
